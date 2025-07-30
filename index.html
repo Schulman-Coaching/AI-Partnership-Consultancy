@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive SPA: AI Partnership Consultancy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone, Teal, Amber) -->
+    <!-- Application Structure Plan: A "hub-and-spoke" single-page application. The core business model is presented first, followed by an "Audience Gateway" with two distinct paths: "For Clients" and "For Partners". Clicking a path dynamically loads the relevant content into a dedicated pane below. This structure avoids a long, overwhelming scroll and allows users to self-segment and engage with the content most relevant to them, creating a more focused and app-like experience than a traditional website. -->
+    <!-- Visualization & Content Choices: Source Info: Multi-page website text. -> Goal: Organize, explain, and persuade two different audiences. -> Viz/Presentation Method: 1) The "How It Works" process is a styled HTML/CSS flowchart using flexbox and borders. 2) The core interaction is a dynamic content display pane controlled by JS. Clicking an audience button updates the pane's innerHTML with detailed benefits and services. -> Justification: For text-heavy, audience-specific content, a dynamic pane is superior to a long scroll or separate pages, as it keeps the user in a single context while allowing deep exploration. No data charts are needed as the source is qualitative. -> Library/Method: Vanilla JS for all interactivity, HTML/Tailwind for all visual structures. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #0f766e; /* teal-700 */
+        }
+        .cta-primary {
+            background-color: #14b8a6; /* teal-500 */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .cta-primary:hover {
+            background-color: #0d9488; /* teal-600 */
+        }
+        .cta-secondary {
+            background-color: white;
+            color: #14b8a6; /* teal-500 */
+            border: 1px solid #14b8a6;
+            transition: all 0.3s ease;
+        }
+        .cta-secondary:hover {
+            background-color: #ccfbf1; /* teal-50 */
+        }
+        .audience-card {
+            border: 2px solid #e5e7eb; /* gray-200 */
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .audience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #14b8a6;
+        }
+        .audience-card.active {
+            border-color: #14b8a6; /* teal-500 */
+            background-color: #f0fdfa; /* teal-50 */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .audience-card.partner.active {
+            border-color: #f59e0b; /* amber-500 */
+            background-color: #fffbeb; /* amber-50 */
+        }
+        .audience-card.partner:hover {
+            border-color: #f59e0b;
+        }
+        .dynamic-content-area {
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-slate-800">AI Partners Inc.</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#audience-gateway" class="nav-link">Solutions</a>
+                <a href="#about" class="nav-link">About Us</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6">
+
+        <!-- Hero Section -->
+        <section id="hero" class="text-center py-20 md:py-32">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-800 mb-4">AI Solutions, Powered by Industry Trust.</h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-600 mb-8">We combine our deep expertise in artificial intelligence with the real-world knowledge of seasoned industry experts. The result? Practical, powerful AI solutions that solve your most pressing challenges.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#audience-gateway" class="cta-primary font-semibold py-3 px-8 rounded-lg">Explore Solutions</a>
+                <a href="#contact" class="cta-secondary font-semibold py-3 px-8 rounded-lg">Become a Partner</a>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-20 bg-white rounded-2xl shadow-md">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">A New Model for AI Adoption</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-slate-600">We believe the most effective AI solutions aren't built in a tech bubble. They are co-created with people who have spent their careers on the front lines of your industry. Our model is built on a simple, powerful partnership.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4 px-4">
+                <div class="flex-1 text-center p-6">
+                    <div class="flex items-center justify-center h-16 w-16 mx-auto bg-teal-100 text-teal-600 rounded-full text-2xl mb-4">🤝</div>
+                    <h3 class="text-xl font-semibold mb-2">1. We Partner with the Best</h3>
+                    <p class="text-slate-600">We seek out and vet established experts from various industries—the people who truly understand the nuances of your business.</p>
+                </div>
+                <div class="text-3xl font-bold text-slate-300 transform md:transform-none rotate-90">→</div>
+                <div class="flex-1 text-center p-6">
+                    <div class="flex items-center justify-center h-16 w-16 mx-auto bg-teal-100 text-teal-600 rounded-full text-2xl mb-4">🔍</div>
+                    <h3 class="text-xl font-semibold mb-2">2. We Discover the Real Problem</h3>
+                    <p class="text-slate-600">Together with our Industry Expert Partner (IEP), we work with you in collaborative workshops to identify the core operational challenges where AI can deliver the most significant impact.</p>
+                </div>
+                <div class="text-3xl font-bold text-slate-300 transform md:transform-none rotate-90">→</div>
+                <div class="flex-1 text-center p-6">
+                    <div class="flex items-center justify-center h-16 w-16 mx-auto bg-teal-100 text-teal-600 rounded-full text-2xl mb-4">💻</div>
+                    <h3 class="text-xl font-semibold mb-2">3. We Build the Right Solution</h3>
+                    <p class="text-slate-600">Our in-house team of AI specialists designs and deploys a custom solution that is perfectly tailored to solve the problem we identified together.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Audience Gateway Section -->
+        <section id="audience-gateway" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Who Are You?</h2>
+                <p class="max-w-2xl mx-auto mt-4 text-slate-600">Our unique model provides distinct value for both businesses looking to adopt AI and industry experts looking to expand their offerings. Select your path below to learn more.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div id="client-card" class="audience-card active rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-teal-800 mb-3">For Your Business</h3>
+                    <p class="text-slate-600 mb-4">Looking for practical AI solutions that are built for your specific industry needs and deliver a real return on investment?</p>
+                    <span class="font-semibold text-teal-600">Explore Client Solutions →</span>
+                </div>
+                <div id="partner-card" class="audience-card partner rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-amber-800 mb-3">For Industry Experts</h3>
+                    <p class="text-slate-600 mb-4">Ready to monetize your decades of experience, bring cutting-edge solutions to your clients, and create a new recurring revenue stream?</p>
+                    <span class="font-semibold text-amber-600">Explore Partnership →</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Content Display Area -->
+        <section id="dynamic-content" class="dynamic-content-area min-h-[500px] py-10">
+            <!-- Content will be injected here by JS -->
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 bg-white rounded-2xl shadow-md">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">About Us</h2>
+            </div>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-teal-700">Our Mission: To Make AI Practical and Accessible</h3>
+                    <p class="text-slate-600">Our mission is to bridge the gap between the potential of artificial intelligence and the practical realities of business operations. We believe that by combining world-class technology with deep industry expertise, we can empower organizations to adopt AI in a way that is meaningful, sustainable, and delivers a true competitive advantage.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3 text-teal-700">How We Work: Our Values</h3>
+                    <ul class="space-y-3">
+                        <li><strong>Partnership First:</strong> We believe collaboration is the key to success. Our relationships are built on trust, transparency, and shared goals.</li>
+                        <li><strong>Problem-Focused:</strong> We are obsessed with solving the right problem, delivering solutions that create measurable business value.</li>
+                        <li><strong>Excellence in Execution:</strong> We are committed to the highest standards of quality and professionalism in everything we do.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-slate-800">Let's Start a Conversation</h2>
+                <p class="mt-4 text-slate-600">Whether you're an industry expert interested in partnership or a business leader looking to explore an AI solution, we'd love to hear from you.</p>
+                <form class="mt-10 text-left space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Your Name" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                        <input type="email" placeholder="Your Email" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                    </div>
+                    <div>
+                        <select class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                            <option>I am a Potential Client</option>
+                            <option>I am a Potential Partner</option>
+                        </select>
+                    </div>
+                    <div>
+                        <textarea placeholder="Your Message" rows="5" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500"></textarea>
+                    </div>
+                    <div class="text-center">
+                         <button type="submit" class="cta-primary font-semibold py-3 px-12 rounded-lg">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-8 bg-slate-100 mt-12">
+        <p class="text-slate-500">&copy; 2025 AI Partners Inc. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const clientCard = document.getElementById('client-card');
+            const partnerCard = document.getElementById('partner-card');
+            const dynamicContentContainer = document.getElementById('dynamic-content');
+
+            const content = {
+                client: `
+                    <div class="max-w-5xl mx-auto">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl font-bold text-teal-800">AI That Understands Your Business</h2>
+                            <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Many businesses are frustrated by technology vendors who promise the world but fail to understand the unique complexities of their operations. We solve this problem by putting industry expertise at the center of everything we do.</p>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-8 text-center">
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-lg mb-2">Credible, Low-Risk Adoption</h4>
+                                <p class="text-sm text-slate-600">Our solutions are introduced by a trusted name from your field, ensuring they are grounded in reality and designed for your actual workflow.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-lg mb-2">Hyper-Relevant Solutions</h4>
+                                <p class="text-sm text-slate-600">We don't build generic software. We focus on solving your specific, nuanced challenges, from automating tasks to uncovering strategic insights.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-lg mb-2">Practical Education & Support</h4>
+                                <p class="text-sm text-slate-600">We ensure your team knows how to use the tools we build, with training delivered in your industry's terminology and long-term support.</p>
+                            </div>
+                        </div>
+                        <div class="mt-12 text-center">
+                             <a href="#contact" class="cta-primary font-semibold py-3 px-8 rounded-lg">Book Your Discovery Call</a>
+                        </div>
+                    </div>
+                `,
+                partner: `
+                    <div class="max-w-5xl mx-auto">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl font-bold text-amber-800">Become an Industry Expert Partner</h2>
+                            <p class="mt-4 text-slate-600 max-w-2xl mx-auto">The demand for AI is exploding, but clients are skeptical of tech companies that don't understand their business. They trust you. This partnership allows you to meet their needs and share in the financial success.</p>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-8 text-center">
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-lg mb-2">A New, Recurring Revenue Stream</h4>
+                                <p class="text-sm text-slate-600">Earn significant revenue from consulting fees, project fees, and a long-term, recurring share of maintenance retainers.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-lg mb-2">Differentiate Your Offering</h4>
+                                <p class="text-sm text-slate-600">Elevate your practice by offering sophisticated AI solutions that set you apart from the competition and deliver tangible results.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-lg mb-2">Zero Technical Overhead</h4>
+                                <p class="text-sm text-slate-600">You focus on client relationships and strategy. Our team handles all technology design, development, deployment, and support.</p>
+                            </div>
+                        </div>
+                         <div class="mt-12 text-center">
+                             <a href="#contact" class="cta-primary font-semibold py-3 px-8 rounded-lg bg-amber-500 hover:bg-amber-600">Schedule a Partnership Call</a>
+                        </div>
+                    </div>
+                `
+            };
+
+            function displayContent(audience) {
+                dynamicContentContainer.style.opacity = 0;
+                
+                setTimeout(() => {
+                    dynamicContentContainer.innerHTML = content[audience];
+                    dynamicContentContainer.style.opacity = 1;
+
+                    if (audience === 'client') {
+                        clientCard.classList.add('active');
+                        partnerCard.classList.remove('active');
+                    } else {
+                        clientCard.classList.remove('active');
+                        partnerCard.classList.add('active');
+                    }
+                }, 300);
+            }
+
+            clientCard.addEventListener('click', () => displayContent('client'));
+            partnerCard.addEventListener('click', () => displayContent('partner'));
+
+            // Initial load
+            displayContent('client');
+        });
+    </script>
+</body>
+</html>
